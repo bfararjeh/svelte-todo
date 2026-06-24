@@ -30,3 +30,10 @@ export function getTodo(id) {
         return Array.from(db.values());
     }
 }
+
+export function editTodo(id, newDesc) {
+    const todo = db.get(id);
+    if (todo) {
+        todo.description = newDesc
+    } 
+}

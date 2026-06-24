@@ -25,4 +25,11 @@ export const actions = {
 		await new Promise(r => setTimeout(r, 300));
         db.completeTodo(data.get("id"));
 	},
+	
+	editTodo: async ({ request }) => {
+		const data = await request.formData();
+		await new Promise(r => setTimeout(r, 300));
+        db.editTodo(data.get("id"), data.get("description"));
+	},
+
 }
