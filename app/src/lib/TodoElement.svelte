@@ -3,7 +3,7 @@
     import { fade } from 'svelte/transition';
     import { enhance } from "$app/forms";
 
-    let { description, id, completed } = $props();
+    let { description, id, complete } = $props();
     
     let pending = $state(false);
     let editing = $state(false);
@@ -37,14 +37,14 @@
             <!-- completed indicator -->
             <button 
             class="p-2"
-            hidden={!completed} 
+            hidden={!complete} 
             disabled={true}
             ><img src="/icons/completed.svg" alt="complete" class="w-6 h-6"/></button>
 
             <!-- complete todo -->
             <button 
             class="p-2 cursor-pointer disabled:cursor-default opacity-100 disabled:opacity-25"
-            hidden={completed || editing} 
+            hidden={complete || editing} 
             disabled={pending || editing} 
             formaction="?/completeTodo"
             ><img src="/icons/complete.svg" alt="complete" class="w-6 h-6"/></button>
@@ -60,7 +60,7 @@
             <!-- start edit -->
             <button 
             class="p-2 cursor-pointer disabled:cursor-default opacity-100 disabled:opacity-25"
-            hidden={completed} 
+            hidden={complete} 
             disabled={pending || editing} 
             type="button"
             onclick={() => editing = true}

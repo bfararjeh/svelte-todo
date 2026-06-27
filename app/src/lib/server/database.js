@@ -1,39 +1,49 @@
 // @ts-nocheck
+import pool from "./connect.js"
 
-const db = new Map();
-
-export function pushTodo(description) {
+export async function pushTodo(description) {
     const id = crypto.randomUUID();
-    db.set(id, { id, description, completed: false });
+    await pool.query(
+        "INSERT INTO todos(id, description, complete) VALUES( $1, $2, $3 )",
+        [id, description, false]
+    );
 }
 
-export function deleteTodo(id) {
+export async function deleteTodo(id) {
     try {
-        db.delete(id);
+        await pool.query(
+            "DELETE FROM todos WHERE id = $1",
+            [id]
+        );
     } catch ({ name, message}) {
         console.log(name);
         console.log(message);
     }
 }
 
-export function completeTodo(id) {
-    const todo = db.get(id);
-    if (todo) {
-        todo.completed = true;
-    }
+export async function completeTodo(id) {
+    await pool.query(
+        "UPDATE todos SET complete = true WHERE id = $1",
+        [id]
+    );
 }
 
-export function getTodo(id) {
+export async function getTodo(id) {
     if (id) {
-        return db.get(id);
+        const result = await pool.query(
+            "SELECT * FROM todos WHERE id = $1",
+            [id]
+        );
+        return result.rows;
     } else {
-        return Array.from(db.values());
+        const result = await pool.query("SELECT * FROM todos");
+        return result.rows;
     }
 }
 
-export function editTodo(id, newDesc) {
-    const todo = db.get(id);
-    if (todo) {
-        todo.description = newDesc
-    } 
+export async function editTodo(id, newDesc) {
+    await pool.query(
+        "UPDATE todos SET description = $2 WHERE id = $1",
+        [id, newDesc]
+    );
 }

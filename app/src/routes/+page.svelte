@@ -8,8 +8,8 @@
     let filter = $state("all");
 
     let filteredTodos = $derived(
-        filter === "complete" ? data.todos.filter(t => t.completed)
-        : filter === "incomplete" ? data.todos.filter(t => !t.completed)
+        filter === "complete" ? data.todos.filter(t => t.complete)
+        : filter === "incomplete" ? data.todos.filter(t => !t.complete)
         : data.todos
     );
 
